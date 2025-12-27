@@ -1,0 +1,40 @@
+{
+  "status": 200,
+  "message": "Fetch data successfully.",
+  "data": [
+    {
+      "id": 1700,
+      "is_verified": null,
+      "company_name_in_gst": null,
+      "gst_number": null,
+      "gst_img": null,
+      "bank_name": null,
+      "account_name": null,
+      "account_number": null,
+      "ifsc_code": null,
+      "pan_number": null,
+      "pan_img": null,
+      "name": " abc store",
+      "email": "sandyborn27@gmail.com",
+      "website": "abc.com",
+      "location": "trichy,tamilnadu",
+      "phone": "08667477138",
+      "industry": "Products",
+      "about": "buy  home decaration things ",
+      "description": null,
+      "button": "Buy Now",
+      "coverimage": "https://theadtip.in/companies/1766756152502_73uocf.jpg",
+      "profileimage": "https://theadtip.in/companies/1766756146925_a4d4ff.webp",
+      "followers": 0,
+      "rating": 0,
+      "is_active": 1,
+      "createdby": 1005286,
+      "createddate": "2025-12-26 19:06:05",
+      "updatedate": null,
+      "qr_code_image": "user_1700_qrcode.png",
+      "question": null,
+      "question_answer": null,
+      "question_options": null
+    }
+  ]
+}

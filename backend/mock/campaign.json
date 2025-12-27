@@ -1,0 +1,30 @@
+{
+  "status": 200,
+  "message": "Ad added successfully.",
+  "data": [
+    {
+      "campaignName": "abc mart",
+      "companyName": " abc store",
+      "companyId": 1700,
+      "adModelId": 8,
+      "targetGender": "all",
+      "maritalStatus": "all",
+      "targetLowerAge": 18,
+      "targetUpperAge": 65,
+      "targetProfessions": "employed",
+      "targetArea": "delhi,chennai,bangalore",
+      "adwatchPerDay": 1,
+      "adPerdayPay": 4,
+      "adSpendPerDay": 4,
+      "adStartDate": "2025-12-25 18:30:00",
+      "adEndDate": "2026-01-04 18:30:00",
+      "adTime": "00:00",
+      "adEndTime": "00:00",
+      "adCustomerTargetPerDay": 1,
+      "modelTypeName": "Non-Skip + Question Ads",
+      "createdby": "1",
+      "id": 1049,
+      "firstPageSave": 1
+    }
+  ]
+}

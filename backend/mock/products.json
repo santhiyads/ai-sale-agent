@@ -1,0 +1,26 @@
+{
+  "status": 200,
+  "message": "Fetch Product successfully.",
+  "data": [
+    {
+      "id": 165,
+      "name": "tops",
+      "description": "cute top",
+      "productType": null,
+      "images": "https://theadtip.in/images/1766757188111_84cyum.png",
+      "regular_price": "100",
+      "market_price": "800",
+      "isActive": 1
+    },
+    {
+      "id": 164,
+      "name": "tops",
+      "description": "cute top",
+      "productType": null,
+      "images": "https://theadtip.in/images/1766757188111_84cyum.png",
+      "regular_price": "100",
+      "market_price": "800",
+      "isActive": 1
+    }
+  ]
+}
