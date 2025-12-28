@@ -36,3 +36,24 @@ backend/
 ---------------------------------------------------------
 *Routes should NOT contain logic
 *Controller handles logic
+
+---------------------------------
+
+npm install dotenv
+
+
+OpenAI Integration
+
+
+1️⃣ Install OpenAI SDK
+
+From backend folder:
+
+npm install openai
+
+2️⃣ Add Environment Variable
+
+Create / update .env in backend:
+
+OPENAI_API_KEY=your_api_key_here
+

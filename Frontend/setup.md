@@ -17,3 +17,19 @@ frontend/
  │   ├── App.jsx
  │   └── main.jsx
  └── package.json
+
+
+frontend/
+ ├── src/
+ │   ├── pages/
+ │   │   └── AdDemoPage.jsx     ← main demo screen
+ │   ├── components/
+ │   │   ├── VideoPlayer.jsx
+ │   │   ├── ChatBubble.jsx
+ │   │   ├── Message.jsx
+ │   │   └── TypingIndicator.jsx
+ │   ├── styles/
+ │   │   └── chat.css
+ │   └── services/
+ │       └── chatApi.js
+--------------------------------------
