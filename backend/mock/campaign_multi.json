@@ -1,0 +1,24 @@
+{
+  "status": 200,
+  "message": "Ad added successfully.",
+  "data": [
+    {
+      "id": 1050,
+      "campaignName": "Urban Wear Combo Offer",
+      "companyId": 1700,
+      "companyName": "Urban Wear Trichy",
+
+      "productIds": [301, 302],
+
+      "adModelId": 8,
+      "modelTypeName": "Non-Skip + Question Ads",
+
+      "targetGender": "all",
+      "targetLowerAge": 18,
+      "targetUpperAge": 45,
+      "targetArea": "trichy",
+
+      "firstPageSave": 1
+    }
+  ]
+}

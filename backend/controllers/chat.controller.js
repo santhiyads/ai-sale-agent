@@ -7,9 +7,10 @@ const companyTransformer = require("../transformers/company.transformer");
 const productTransformer = require("../transformers/product.transformer");
 
 // IMPORT RAW MOCK DATA
-const rawCampaign = require("../mock/campaign.json");
+// const rawCampaign = require("../mock/campaign.json");
 const rawCompany = require("../mock/company.json");
 const rawProducts = require("../mock/products.json");
+const rawCampaign = require("../mock/campaign_multi.json");
 
 // TRANSFORM DATA (IMPORTANT)
 const campaign = campaignTransformer(rawCampaign);
@@ -20,9 +21,6 @@ const allProducts = productTransformer(rawProducts);
 const products = allProducts.filter(p =>
   campaign.productIds.includes(p.productId)
 );
-console.log("CAMPAIGN PRODUCT IDS:", campaign.productIds);
-console.log("ALL PRODUCTS:", allProducts);
-console.log("FILTERED PRODUCTS:", products);
 
 exports.sendMessage = async (req, res) => {
   try {
