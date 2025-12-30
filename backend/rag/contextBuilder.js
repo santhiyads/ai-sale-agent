@@ -27,7 +27,7 @@ and guide the user toward a purchase when appropriate.\n\n`;
   /* --------------------------------------------------
    * 3. PRODUCT INFORMATION
    * -------------------------------------------------- */
-  context += `Products Available:\n`;
+  context += `This advertisement promotes the following product:\n`;
 
   products
     .filter(p => p.isActive)

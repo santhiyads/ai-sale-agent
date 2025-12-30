@@ -49,7 +49,7 @@ function campaignTransformer(rawCampaignResponse) {
     campaignId: campaign.id,
     campaignName: campaign.campaignName,
     companyId: campaign.companyId,
-    companyName: campaign.companyName,
+    productIds: campaign.productIds || [],    companyName: campaign.companyName,
     adModelId: campaign.adModelId,
     adModelName: campaign.modelTypeName,
 

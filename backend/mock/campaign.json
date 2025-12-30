@@ -6,6 +6,7 @@
       "campaignName": "Urban Wear Winter Collection",
       "companyName": "Urban Wear Trichy",
       "companyId": 2001,
+      "productIds": [301],  
       "adModelId": 8,
       "modelTypeName": "Non-Skip + Question Ads",
       "targetGender": "female",

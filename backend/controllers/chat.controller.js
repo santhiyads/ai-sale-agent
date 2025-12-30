@@ -14,7 +14,15 @@ const rawProducts = require("../mock/products.json");
 // TRANSFORM DATA (IMPORTANT)
 const campaign = campaignTransformer(rawCampaign);
 const company = companyTransformer(rawCompany);
-const products = productTransformer(rawProducts);
+const allProducts = productTransformer(rawProducts);
+
+// ONLY products promoted by this campaign
+const products = allProducts.filter(p =>
+  campaign.productIds.includes(p.productId)
+);
+console.log("CAMPAIGN PRODUCT IDS:", campaign.productIds);
+console.log("ALL PRODUCTS:", allProducts);
+console.log("FILTERED PRODUCTS:", products);
 
 exports.sendMessage = async (req, res) => {
   try {
