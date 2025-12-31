@@ -1,14 +1,15 @@
-export default function VideoPlayer({ onVideoEnd }) {
+export default function VideoPlayer({ src, onEnd }) {
   return (
     <video
-      src="/demo-ad.mp4"
+      src={src}
       autoPlay
-      controls
-      onEnded={onVideoEnd}
+      controls={false}
+      onEnded={onEnd}
       style={{
-        width: "100%",
-        height: "100%",
-        objectFit: "cover"
+        width: "100vw",
+        height: "100vh",
+        objectFit: "cover",
+        background: "#000"
       }}
     />
   );

@@ -1,131 +1,66 @@
 import { useState } from "react";
 import { sendChatMessage } from "../services/chatApi";
+import Message from "./Message";
+import TypingIndicator from "./TypingIndicator";
 
-export default function ChatBubble() {
+export default function ChatBubble({
+  campaignId,
+  companyName,
+  productName,
+  onBack
+}) {
   const [messages, setMessages] = useState([
     {
-      role: "ai",
-      text: "👋 Hi! Want to know more about this product?"
+      text: `👋 Hi! I’m the AI assistant for ${productName} by ${companyName}. What would you like to know?`,
+      isUser: false
     }
   ]);
-
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [typing, setTyping] = useState(false);
 
-  async function handleSend() {
-    if (!input.trim() || loading) return;
+  async function sendMessage() {
+    if (!input.trim()) return;
 
-    const userMessage = { role: "user", text: input };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages(prev => [...prev, { text: input, isUser: true }]);
     setInput("");
-    setLoading(true);
+    setTyping(true);
 
-    try {
-      const response = await sendChatMessage(input);
+    console.log("SENDING:", { campaignId, message: input });
 
-      setMessages(prev => [
-        ...prev,
-        { role: "ai", text: response.reply }
-      ]);
-    } catch (err) {
-      setMessages(prev => [
-        ...prev,
-        { role: "ai", text: "⚠️ Something went wrong. Please try again." }
-      ]);
-    }
+    const res = await sendChatMessage(campaignId, input);
 
-    setLoading(false);
+    setTyping(false);
+    setMessages(prev => [...prev, { text: res.reply, isUser: false }]);
   }
 
   return (
-    <div style={styles.chatBubble}>
-      <div style={styles.header}>AI Assistant</div>
-
-      <div style={styles.messages}>
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            style={
-              msg.role === "user"
-                ? styles.userMessage
-                : styles.aiMessage
-            }
-          >
-            {msg.text}
-          </div>
-        ))}
+    <div className="chat-container">
+      <div className="chat-header">
+        <div>
+          <strong>{companyName}</strong>
+          <div className="chat-subtitle">{productName}</div>
+          <span className="verified">✔ Verified</span>
+        </div>
+        <button onClick={onBack}>⬅ Back</button>
       </div>
 
-      <div style={styles.inputRow}>
-        <input
-          placeholder="Type your message..."
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          style={styles.input}
-          onKeyDown={e => e.key === "Enter" && handleSend()}
-        />
-        <button onClick={handleSend} style={styles.sendBtn}>
-          Send
-        </button>
+      <div className="chat-box">
+        <div className="messages">
+          {messages.map((m, i) => (
+            <Message key={i} {...m} />
+          ))}
+          {typing && <TypingIndicator />}
+        </div>
+
+        <div className="input-bar">
+          <input
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            placeholder="Ask about price, warranty, offers..."
+          />
+          <button onClick={sendMessage}>Send</button>
+        </div>
       </div>
     </div>
   );
 }
-
-const styles = {
-  chatBubble: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: "45%",
-    backgroundColor: "#fff",
-    borderTopLeftRadius: "20px",
-    borderTopRightRadius: "20px",
-    boxShadow: "0 -4px 20px rgba(0,0,0,0.3)",
-    display: "flex",
-    flexDirection: "column"
-  },
-  header: {
-    padding: "12px",
-    fontWeight: "bold",
-    borderBottom: "1px solid #eee"
-  },
-  messages: {
-    flex: 1,
-    padding: "12px",
-    overflowY: "auto"
-  },
-  aiMessage: {
-    backgroundColor: "#f1f1f1",
-    padding: "10px",
-    borderRadius: "12px",
-    marginBottom: "8px",
-    maxWidth: "80%"
-  },
-  userMessage: {
-    backgroundColor: "#007bff",
-    color: "#fff",
-    padding: "10px",
-    borderRadius: "12px",
-    marginBottom: "8px",
-    marginLeft: "auto",
-    maxWidth: "80%"
-  },
-  inputRow: {
-    display: "flex",
-    borderTop: "1px solid #eee"
-  },
-  input: {
-    flex: 1,
-    padding: "12px",
-    border: "none",
-    outline: "none"
-  },
-  sendBtn: {
-    padding: "0 16px",
-    border: "none",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    cursor: "pointer"
-  }
-};
