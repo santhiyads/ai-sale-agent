@@ -1,0 +1,36 @@
+{
+  "status": 200,
+  "message": "Fetch Product successfully.",
+  "data": [
+    {
+      "id": 601,
+      "name": "Titan Neo Analog Watch – Men",
+      "description": "Classic analog watch with stainless steel strap, suitable for formal and casual wear.",
+      "productType": "Men",
+      "images": "https://www.titan.co.in/dw/image/v2/BKDD_PRD/on/demandware.static/-/Sites-titan-master-catalog/default/dw2f9cfa3b/images/Titan_Neo_Men.jpg",
+      "regular_price": "3995",
+      "market_price": "6995",
+      "isActive": 1
+    },
+    {
+      "id": 602,
+      "name": "Titan Raga Viva – Women",
+      "description": "Elegant women’s watch with rose gold finish, perfect for festive and party wear.",
+      "productType": "Women",
+      "images": "https://www.titan.co.in/dw/image/v2/BKDD_PRD/on/demandware.static/-/Sites-titan-master-catalog/default/dw3e8a2b4c/images/Titan_Raga_Women.jpg",
+      "regular_price": "7995",
+      "market_price": "12995",
+      "isActive": 1
+    },
+    {
+      "id": 603,
+      "name": "Titan Smart Pro",
+      "description": "Advanced smartwatch with fitness tracking, heart rate monitor, and AMOLED display.",
+      "productType": "Smart Watch",
+      "images": "https://www.titan.co.in/dw/image/v2/BKDD_PRD/on/demandware.static/-/Sites-titan-master-catalog/default/dw9c8a7e2f/images/Titan_Smart_Pro.jpg",
+      "regular_price": "9995",
+      "market_price": "14995",
+      "isActive": 1
+    }
+  ]
+}

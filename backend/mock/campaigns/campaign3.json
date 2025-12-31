@@ -1,0 +1,22 @@
+{
+  "status": 200,
+  "message": "Ad added successfully.",
+  "data": [
+    {
+      "campaignName": "Bewakoof Trendy T-Shirts Sale",
+      "companyName": "Bewakoof",
+      "companyId": 6001,
+      "productIds": [701, 703],
+      "adModelId": 8,
+      "modelTypeName": "Non-Skip + Question Ads",
+      "targetGender": "all",
+      "targetLowerAge": 16,
+      "targetUpperAge": 35,
+      "targetArea": "india",
+      "adStartDate": "2025-02-05 00:00:00",
+      "adEndDate": "2025-03-05 23:59:59",
+      "firstPageSave": 1,
+      "id": 9301
+    }
+  ]
+}

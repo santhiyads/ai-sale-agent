@@ -1,0 +1,22 @@
+{
+  "status": 200,
+  "message": "Ad added successfully.",
+  "data": [
+    {
+      "campaignName": "Birthday & Custom Cake Toppers Promotion",
+      "companyName": "Cake Toppers India",
+      "companyId": 4001,
+      "productIds": [201, 205],
+      "adModelId": 8,
+      "modelTypeName": "Non-Skip + Question Ads",
+      "targetGender": "all",
+      "targetLowerAge": 18,
+      "targetUpperAge": 50,
+      "targetArea": "india",
+      "adStartDate": "2025-01-20 00:00:00",
+      "adEndDate": "2025-02-20 23:59:59",
+      "firstPageSave": 1,
+      "id": 9101
+    }
+  ]
+}

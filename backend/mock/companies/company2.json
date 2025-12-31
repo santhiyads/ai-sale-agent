@@ -1,0 +1,45 @@
+{
+  "status": 200,
+  "message": "Fetch data successfully.",
+  "data": [
+    {
+      "id": 5001,
+      "is_verified": 1,
+      "company_name_in_gst": "Titan Company Limited",
+      "gst_number": null,
+      "gst_img": null,
+      "bank_name": null,
+      "account_name": null,
+      "account_number": null,
+      "ifsc_code": null,
+      "pan_number": null,
+      "pan_img": null,
+      "name": "Titan Watches",
+      "email": "customercare@titan.co.in",
+      "website": "https://www.titan.co.in",
+      "location": "Bengaluru, Karnataka, India",
+      "phone": "1800-266-0123",
+      "industry": "Products / Watches",
+      "about": "Titan is India’s leading watch brand offering stylish, premium, and smart watches for men, women, and kids.",
+      "description": "Titan Watches is a flagship brand of Titan Company Limited, known for quality craftsmanship, innovation, and timeless designs across India.",
+      "button": "Shop Now",
+      "coverimage": "C:\\Users\\Santh\\Desktop\\ai-sale-agent\\backend\\mock\\pic\\banner\\watch.jpg",
+      "profileimage": "C:\\Users\\Santh\\Desktop\\ai-sale-agent\\backend\\mock\\pic\\logo\\watch.png",
+      "followers": null,
+      "rating": 4.5,
+      "is_active": 1,
+      "createdby": 1005286,
+      "createddate": "2025-01-10 10:00:00",
+      "updatedate": null,
+      "qr_code_image": "user_5001_qrcode.png",
+      "question": "Which type of watch are you looking for?",
+      "question_answer": null,
+      "question_options": [
+        "Men Watches",
+        "Women Watches",
+        "Smart Watches",
+        "Couple Watches"
+      ]
+    }
+  ]
+}

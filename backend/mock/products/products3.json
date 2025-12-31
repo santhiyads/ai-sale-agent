@@ -1,0 +1,36 @@
+{
+  "status": 200,
+  "message": "Fetch Product successfully.",
+  "data": [
+    {
+      "id": 701,
+      "name": "Men’s Oversized Graphic T-Shirt",
+      "description": "Trendy oversized cotton T-shirt with bold graphic print, perfect for streetwear style.",
+      "productType": "Men / Oversized",
+      "images": "https://images.bewakoof.com/t640/men-oversized-graphic-tshirt.jpg",
+      "regular_price": "599",
+      "market_price": "1299",
+      "isActive": 1
+    },
+    {
+      "id": 702,
+      "name": "Women’s Printed T-Shirt",
+      "description": "Soft cotton slim-fit printed T-shirt for everyday casual wear.",
+      "productType": "Women",
+      "images": "https://images.bewakoof.com/t640/women-printed-tshirt.jpg",
+      "regular_price": "499",
+      "market_price": "999",
+      "isActive": 1
+    },
+    {
+      "id": 703,
+      "name": "Men’s Plain Black T-Shirt",
+      "description": "Classic plain black round-neck T-shirt made from breathable cotton fabric.",
+      "productType": "Men / Basic",
+      "images": "https://images.bewakoof.com/t640/men-plain-black-tshirt.jpg",
+      "regular_price": "399",
+      "market_price": "799",
+      "isActive": 1
+    }
+  ]
+}

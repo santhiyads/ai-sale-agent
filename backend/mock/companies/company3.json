@@ -1,0 +1,45 @@
+{
+  "status": 200,
+  "message": "Fetch data successfully.",
+  "data": [
+    {
+      "id": 6001,
+      "is_verified": 1,
+      "company_name_in_gst": "Bewakoof Brands Pvt Ltd",
+      "gst_number": null,
+      "gst_img": null,
+      "bank_name": null,
+      "account_name": null,
+      "account_number": null,
+      "ifsc_code": null,
+      "pan_number": null,
+      "pan_img": null,
+      "name": "Bewakoof",
+      "email": "care@bewakoof.com",
+      "website": "https://www.bewakoof.com",
+      "location": "Mumbai, Maharashtra, India",
+      "phone": "1800-266-1000",
+      "industry": "Products / Fashion / T-Shirts",
+      "about": "Bewakoof is a youth-focused fashion brand offering trendy T-shirts, hoodies, oversized wear, and casual clothing.",
+      "description": "Bewakoof is a leading Indian D2C fashion brand popular for graphic T-shirts, affordable pricing, and bold designs for men and women.",
+      "button": "Shop Now",
+      "coverimage": "C:\\Users\\Santh\\Desktop\\ai-sale-agent\\backend\\mock\\pic\\banner\\shirt.jpeg",
+      "profileimage": "C:\\Users\\Santh\\Desktop\\ai-sale-agent\\backend\\mock\\pic\\logo\\shirt.png",
+      "followers": null,
+      "rating": 4.4,
+      "is_active": 1,
+      "createdby": 1005286,
+      "createddate": "2025-01-12 11:00:00",
+      "updatedate": null,
+      "qr_code_image": "user_6001_qrcode.png",
+      "question": "What kind of T-shirt are you looking for?",
+      "question_answer": null,
+      "question_options": [
+        "Men T-Shirts",
+        "Women T-Shirts",
+        "Oversized",
+        "Graphic Prints"
+      ]
+    }
+  ]
+}

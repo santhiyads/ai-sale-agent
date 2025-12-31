@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "message": "Fetch data successfully.",
+  "data": [
+    {
+      "id": 4001,
+      "is_verified": 1,
+      "company_name_in_gst": null,
+      "gst_number": null,
+      "gst_img": null,
+      "bank_name": null,
+      "account_name": null,
+      "account_number": null,
+      "ifsc_code": null,
+      "pan_number": null,
+      "pan_img": null,
+      "name": "Cake Toppers India",
+      "email": "caketoppersindia@gmail.com",
+      "website": "https://caketoppersindia.com",
+      "location": "Indore, Madhya Pradesh, India",
+      "phone": "7999549613",
+      "industry": "Products / Cake Decoration",
+      "about": "Online store offering a wide range of cake toppers and cake decorating accessories for birthdays, weddings, anniversaries, baby showers and more.", 
+      "description": "Cake Toppers India is a real online shop selling cake toppers, accessories and custom designs for celebrations across India. Offers customized cake toppers for many occasions and decorative tools to make cakes stand out. :contentReference[oaicite:2]{index=2}",
+      "button": "Visit Website",
+      "coverimage": "C:\\Users\\Santh\\Desktop\\ai-sale-agent\\backend\\mock\\pic\\banner\\caketopper.jpeg",
+      "profileimage": "C:\\Users\\Santh\\Desktop\\ai-sale-agent\\backend\\mock\\pic\\logo\\caketopper.png",
+      "followers": null,
+      "rating": null,
+      "is_active": 1,
+      "createdby": null,
+      "createddate": null,
+      "updatedate": null,
+      "qr_code_image": null,
+      "question": "What kind of cake topper are you looking for?",
+      "question_answer": null,
+      "question_options": [
+        "Birthday",
+        "Wedding",
+        "Anniversary",
+        "Baby Shower",
+        "Custom Design"
+      ]
+    }
+  ]
+}

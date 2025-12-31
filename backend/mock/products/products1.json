@@ -1,0 +1,56 @@
+{
+  "status": 200,
+  "message": "Fetch Product successfully.",
+  "data": [
+    {
+      "id": 201,
+      "name": "Happy Birthday Cake Topper – Gold Acrylic",
+      "description": "Premium gold acrylic happy birthday cake topper suitable for all birthday cakes. Reusable and food-safe.",
+      "productType": "Birthday",
+      "images": "https://caketoppersindia.com/cdn/shop/products/happy-birthday-gold-acrylic-cake-topper.jpg",
+      "regular_price": "299",
+      "market_price": "599",
+      "isActive": 1
+    },
+    {
+      "id": 202,
+      "name": "Bride To Be Cake Topper – Rose Gold",
+      "description": "Elegant rose gold acrylic cake topper for bridal showers and bachelorette celebrations.",
+      "productType": "Wedding",
+      "images": "https://caketoppersindia.com/cdn/shop/products/bride-to-be-rose-gold-cake-topper.jpg",
+      "regular_price": "349",
+      "market_price": "699",
+      "isActive": 1
+    },
+    {
+      "id": 203,
+      "name": "Baby Shower Cake Topper – It’s a Boy",
+      "description": "Cute baby shower cake topper with pastel finish, perfect for baby boy celebrations.",
+      "productType": "Baby Shower",
+      "images": "https://caketoppersindia.com/cdn/shop/products/its-a-boy-baby-shower-cake-topper.jpg",
+      "regular_price": "279",
+      "market_price": "549",
+      "isActive": 1
+    },
+    {
+      "id": 204,
+      "name": "Anniversary Cake Topper – Mr & Mrs",
+      "description": "Stylish Mr & Mrs cake topper ideal for wedding anniversaries and couple celebrations.",
+      "productType": "Anniversary",
+      "images": "https://caketoppersindia.com/cdn/shop/products/mr-and-mrs-anniversary-cake-topper.jpg",
+      "regular_price": "329",
+      "market_price": "649",
+      "isActive": 1
+    },
+    {
+      "id": 205,
+      "name": "Customized Name Cake Topper",
+      "description": "Personalized name cake topper made to order. Ideal for birthdays, weddings, and special occasions.",
+      "productType": "Custom",
+      "images": "https://caketoppersindia.com/cdn/shop/products/custom-name-cake-topper.jpg",
+      "regular_price": "499",
+      "market_price": "999",
+      "isActive": 1
+    }
+  ]
+}

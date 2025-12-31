@@ -1,0 +1,22 @@
+{
+  "status": 200,
+  "message": "Ad added successfully.",
+  "data": [
+    {
+      "campaignName": "Titan Style & Smart Watch Campaign",
+      "companyName": "Titan Watches",
+      "companyId": 5001,
+      "productIds": [601, 603],
+      "adModelId": 8,
+      "modelTypeName": "Non-Skip + Question Ads",
+      "targetGender": "all",
+      "targetLowerAge": 20,
+      "targetUpperAge": 50,
+      "targetArea": "india",
+      "adStartDate": "2025-02-01 00:00:00",
+      "adEndDate": "2025-03-01 23:59:59",
+      "firstPageSave": 1,
+      "id": 9201
+    }
+  ]
+}

@@ -1,50 +1,52 @@
 const { generateAIResponse } = require("../services/aiChat.service");
 const buildRagContext = require("../rag/contextBuilder");
 
-// IMPORT TRANSFORMERS
 const campaignTransformer = require("../transformers/campaign.transformer");
 const companyTransformer = require("../transformers/company.transformer");
 const productTransformer = require("../transformers/product.transformer");
 
-// IMPORT RAW MOCK DATA
-// const rawCampaign = require("../mock/campaign.json");
-const rawCompany = require("../mock/company.json");
-const rawProducts = require("../mock/products.json");
-const rawCampaign = require("../mock/campaign_multi.json");
-
-// TRANSFORM DATA (IMPORTANT)
-const campaign = campaignTransformer(rawCampaign);
-const company = companyTransformer(rawCompany);
-const allProducts = productTransformer(rawProducts);
-
-// ONLY products promoted by this campaign
-const products = allProducts.filter(p =>
-  campaign.productIds.includes(p.productId)
-);
+const { rawLoader } = require("../mock");
 
 exports.sendMessage = async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, campaign_id } = req.body;
 
-    // 1️⃣ BUILD REAL RAG CONTEXT
+    if (!campaign_id) {
+      return res.status(400).json({ reply: "campaign_id is required" });
+    }
+
+    // 1️⃣ Load correct data
+    const { rawCampaign, rawCompany, rawProducts } =
+      rawLoader.loadByCampaignId(campaign_id);
+
+    // 2️⃣ Transform
+    const campaign = campaignTransformer(rawCampaign);
+    const company = companyTransformer(rawCompany);
+    const allProducts = productTransformer(rawProducts);
+
+    // 3️⃣ Filter products for this campaign ONLY
+    const products = allProducts.filter(p =>
+      campaign.productIds.includes(p.productId)
+    );
+
+    // 4️⃣ Build RAG
     const ragContext = buildRagContext({
       campaign,
       company,
       products
     });
 
-    // 2️⃣ CALL AI WITH REAL DATA
-    const aiReply = await generateAIResponse({
+    // 5️⃣ AI response
+    const reply = await generateAIResponse({
       state: "PRODUCT_PITCH",
       ragContext,
       userMessage: message
     });
 
-    res.json({ reply: aiReply });
+    res.json({ reply });
+
   } catch (err) {
-    console.error("Chat error:", err);
-    res.status(500).json({
-      reply: "Sorry, something went wrong."
-    });
+    console.error(err);
+    res.status(500).json({ reply: "Server error" });
   }
 };
