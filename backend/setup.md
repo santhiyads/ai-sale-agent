@@ -57,3 +57,17 @@ Create / update .env in backend:
 
 OPENAI_API_KEY=your_api_key_here
 
+-----------------------------------
+
+install mysql2 package
+
+Run:
+
+npm install mysql2
+
+
+You should see something like:
+
+added XX packages
+
+-->  node scripts/initDb.js

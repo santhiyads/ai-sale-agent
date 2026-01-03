@@ -1,8 +1,15 @@
+import { useState } from "react";
 import AdGridPage from "./pages/AdGridPage";
 import AdDemoPage from "./pages/AdDemoPage";
 
-import "./styles/chat.css";
+function App() {
+  const [selectedAd, setSelectedAd] = useState(null);
 
-export default function App() {
-  return <AdDemoPage />;
+  if (!selectedAd) {
+    return <AdGridPage onSelectAd={setSelectedAd} />;
+  }
+
+  return <AdDemoPage ad={selectedAd} />;
 }
+
+export default App;

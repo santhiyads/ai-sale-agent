@@ -1,94 +1,69 @@
-const CHAT_STATES = require("./chatState.constants");
 const OpenAI = require("openai");
-const buildRagContext = require("../rag/contextBuilder");
+const CHAT_STATES = require("./chatState.constants");
 
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
 /**
- * Build AI prompt based on chat state.
+ * Generate AI response
+ * - SYSTEM prompt enforces sales behavior
+ * - Intent controls WHAT to answer
+ * - State controls WHERE the conversation is
  */
-function buildPrompt({ state, ragContext, userMessage }) {
-  switch (state) {
-    case CHAT_STATES.GREETING:
-      return `
-You are a professional sales assistant.
-Greet the user politely and invite them to explore.
+async function generateAIResponse({
+  state,
+  ragContext,
+  history = [],
+  userMessage = "",
+  intent,
+  systemHint = ""
+}) {
+  const SYSTEM_PROMPT = `
+You are a PROFESSIONAL AI SALES ASSISTANT.
 
-Use ONLY the information below.
+STRICT RULES (YOU MUST FOLLOW ALL):
+- You are NOT a general chatbot.
+- You represent ONLY this company.
+- NEVER end the conversation politely.
+- NEVER say:
+  "Thank you for your interest"
+  "Thank you for your engagement"
+  "Feel free to ask"
+  "Have a great day"
+- ALWAYS answer the user's question directly.
+- If the user asks about PRICE → you MUST mention the price.
+- If product data exists → you MUST use it.
+- NEVER invent information.
+- After answering, ALWAYS ask ONE short sales follow-up question.
+- Be confident, clear, and sales-focused.
+
+CURRENT CHAT STATE: ${state}
+CURRENT USER INTENT: ${intent}
+
+${systemHint}
+
+ONLY use the information below:
 ${ragContext}
 `;
 
-    case CHAT_STATES.INTEREST_CHECK:
-      return `
-You are a sales assistant.
-Ask ONE short question to understand user interest.
+  const messages = [
+    { role: "system", content: SYSTEM_PROMPT },
 
-Use ONLY the information below.
-${ragContext}
-`;
+    // Conversation memory
+    ...history.map(h => ({
+      role: h.role === "user" ? "user" : "assistant",
+      content: h.content
+    })),
 
-    case CHAT_STATES.QUALIFICATION:
-      return `
-You are a sales assistant.
-Ask ONE clarifying question (budget, usage, or preference).
-
-User said: "${userMessage || ""}"
-
-Use ONLY the information below.
-${ragContext}
-`;
-
-    case CHAT_STATES.PRODUCT_PITCH:
-      return `
-You are a sales assistant.
-Recommend the best suitable product.
-Mention price and discount clearly.
-Do NOT invent details.
-
-User said: "${userMessage || ""}"
-
-Use ONLY the information below.
-${ragContext}
-`;
-
-    case CHAT_STATES.CTA:
-      return `
-You are a sales assistant.
-Encourage the user to take action using the CTA.
-Do NOT negotiate or change price.
-
-Use ONLY the information below.
-${ragContext}
-`;
-
-    case CHAT_STATES.COMPLETED:
-      return `
-Thank the user politely and close the conversation.
-`;
-
-    default:
-      return `
-Respond politely using ONLY the information below.
-${ragContext}
-`;
-  }
-}
-
-/**
- * Generate AI response using OpenAI
- */
-async function generateAIResponse({ state, ragContext, userMessage }) {
-  const prompt = buildPrompt({ state, ragContext, userMessage });
+    // Current user message
+    { role: "user", content: userMessage }
+  ];
 
   const response = await client.chat.completions.create({
-    model: "gpt-4o-mini",   // fast & cheap
-    messages: [
-  { role: "system", content: prompt },
-  { role: "user", content: userMessage || "Continue" }
-],
-    temperature: 0.3        // LOW = less hallucination
+    model: "gpt-4o-mini",   // fast + stable
+    messages,
+    temperature: 0.2        // low = less hallucination
   });
 
   return response.choices[0].message.content;
