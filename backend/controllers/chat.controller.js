@@ -14,6 +14,14 @@ const CHAT_STATES = require("../services/chatState.constants");
 const { getNextState } = require("../services/chatState.service");
 
 const detectIntent = require("../services/intent.service");
+const { canAnswerFromContext } = require("../services/knowledgeJudge.service");
+
+const { initSemanticRag, getSemanticContext } =
+  require("../services/semanticRag.service");
+
+const {
+  generateSemanticAnswer
+} = require("../services/semanticAnswer.service");
 
 exports.sendMessage = async (req, res) => {
   try {
@@ -98,6 +106,75 @@ exports.sendMessage = async (req, res) => {
     });
 
     /* --------------------------------------------------
+   8️⃣ AI Knowledge Sufficiency Judge
+-------------------------------------------------- */
+    const canAnswer = await canAnswerFromContext({
+      ragContext,
+      userMessage: message
+    });
+    let finalRagContext = ragContext;
+
+/* --------------------------------------------------
+   9️⃣ Semantic RAG (ONLY if needed)
+-------------------------------------------------- */
+    if (!canAnswer) {
+  // 1️⃣ Initialize semantic RAG (company-scoped)
+  await initSemanticRag(company.companyId, company.website);
+
+  // 2️⃣ Retrieve semantic context
+  const semanticContext = await getSemanticContext(
+    company.companyId,
+    message
+  );
+
+  // 3️⃣ Generate final semantic-aware answer
+  const semanticReply = await generateSemanticAnswer({
+    state: nextState,
+    ragContext,
+    semanticContext,
+    history,
+    userMessage: message,
+    intent,
+    systemHint
+  });
+
+  await ChatMessageModel.save({
+    sessionId: session_id,
+    role: "assistant",
+    content: semanticReply
+  });
+
+  await ChatSessionModel.updateState(session_id, nextState);
+
+  return res.json({ reply: semanticReply });
+}
+
+// Check if web RAG is needed
+if (knowledgeDecision.needsWebRag) {
+  const webContext = await getWebContext(message);
+
+  const webReply = await generateWebAnswer({
+    state: nextState,
+    ragContext,
+    semanticContext,
+    webContext,
+    history,
+    userMessage: message,
+    intent
+  });
+
+  await ChatMessageModel.save({
+    sessionId: session_id,
+    role: "assistant",
+    content: webReply
+  });
+
+  return res.json({ reply: webReply });
+}
+
+
+
+    /* -----------------------------------------
        8️⃣ Create intent-based system hint
     -------------------------------------------------- */
     let systemHint = "";
@@ -127,7 +204,7 @@ exports.sendMessage = async (req, res) => {
     -------------------------------------------------- */
     const reply = await generateAIResponse({
       state: nextState,
-      ragContext,
+      ragContext: finalRagContext,
       history,
       userMessage: message,
       intent,

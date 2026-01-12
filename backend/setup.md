@@ -71,3 +71,9 @@ You should see something like:
 added XX packages
 
 -->  node scripts/initDb.js
+
+
+-----
+npm install langchain @langchain/openai chromadb cheerio
+
+npm install langchain @langchain/openai @langchain/core
