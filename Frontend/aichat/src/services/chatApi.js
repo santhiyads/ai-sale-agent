@@ -4,7 +4,10 @@ function getSessionId() {
   let sessionId = localStorage.getItem("chat_session_id");
 
   if (!sessionId) {
-    sessionId = crypto.randomUUID();
+    sessionId =
+      crypto?.randomUUID?.() ||
+      `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
     localStorage.setItem("chat_session_id", sessionId);
   }
 
@@ -12,7 +15,7 @@ function getSessionId() {
 }
 
 export async function sendChatMessage(campaignId, message) {
-  const response = await fetch("http://localhost:4000/chat/message", {
+  const response = await fetch("/chat/message", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

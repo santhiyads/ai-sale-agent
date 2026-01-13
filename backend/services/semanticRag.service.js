@@ -1,10 +1,5 @@
 /**
  * Semantic RAG Service (PRODUCTION – Pinecone)
- * --------------------------------------------
- * - Website ingestion
- * - Chunking
- * - Embeddings
- * - Persistent vector search
  */
 
 require("dotenv").config();
@@ -23,30 +18,49 @@ const { OpenAIEmbeddings } =
 
 const { Pinecone } =
   require("@pinecone-database/pinecone");
-const { PineconeStore } = require("@langchain/pinecone");
+
+const { PineconeStore } =
+  require("@langchain/pinecone");
 
 const { Document } =
   require("@langchain/core/documents");
 
 const EMBEDDED_JSON = path.join(process.cwd(), "embedded.json");
 
+
+
 /* --------------------------------------------------
-   Pinecone Client (Singleton)
+   Embeddings (MODEL IS CORRECTLY HERE ✅)
+-------------------------------------------------- */
+const embeddings = new OpenAIEmbeddings({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: "text-embedding-3-small"
+});
+
+
+
+/* --------------------------------------------------
+   Pinecone Client (MISSING BEFORE — FIXED ✅)
 -------------------------------------------------- */
 const pinecone = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY
 });
 
+
+
+/* --------------------------------------------------
+   Vector Store Helper
+-------------------------------------------------- */
 async function getVectorStore() {
   const index = pinecone.index(process.env.PINECONE_INDEX);
 
   return await PineconeStore.fromExistingIndex(
-    new OpenAIEmbeddings({
-      apiKey: process.env.OPENAI_API_KEY
-    }),
+    embeddings,
     { pineconeIndex: index }
   );
 }
+
+
 
 /* --------------------------------------------------
    Embedded URL tracking
@@ -56,6 +70,7 @@ async function markEmbedded(url) {
   try {
     map = await fs.readJson(EMBEDDED_JSON);
   } catch {}
+
   map[url] = { embeddedAt: new Date().toISOString() };
   await fs.writeJson(EMBEDDED_JSON, map, { spaces: 2 });
 }
@@ -69,8 +84,10 @@ async function isUrlEmbedded(url) {
   }
 }
 
+
+
 /* --------------------------------------------------
-   OPTIONAL: Crawl index (lightweight)
+   OPTIONAL: Crawl index
 -------------------------------------------------- */
 async function buildIndex(startUrl, maxPages = 30) {
   const visited = new Set();
@@ -106,8 +123,10 @@ async function buildIndex(startUrl, maxPages = 30) {
   return index;
 }
 
+
+
 /* --------------------------------------------------
-   Fetch + Embed (Pinecone)
+   Fetch + Embed
 -------------------------------------------------- */
 async function fetchAndEmbed(url) {
   console.log("🌐 Semantic ingest:", url);
@@ -118,9 +137,7 @@ async function fetchAndEmbed(url) {
   });
 
   const docs = await loader.load();
-  if (!docs.length) {
-    throw new Error("No content extracted");
-  }
+  if (!docs.length) throw new Error("No content extracted");
 
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 800,
@@ -142,8 +159,9 @@ async function fetchAndEmbed(url) {
   await markEmbedded(url);
 
   console.log(`✅ Embedded ${chunks.length} chunks`);
-  return { addedChunks: chunks.length };
 }
+
+
 
 /* --------------------------------------------------
    Retrieve Semantic Context
@@ -153,17 +171,10 @@ async function fetchIfNeededAndAnswer(url, question) {
     await fetchAndEmbed(url);
   }
 
-  const embeddings = new OpenAIEmbeddings({
-    apiKey: process.env.OPENAI_API_KEY
-  });
+  const store = await getVectorStore();
 
-  const store = await getVectorStore(embeddings);
+  const retriever = store.asRetriever({ k: 5 });
 
-  const retriever = store.asRetriever({
-    k: 5
-  });
-
-  // ✅ NEW API
   const results = await retriever.invoke(question);
 
   return {
@@ -171,6 +182,8 @@ async function fetchIfNeededAndAnswer(url, question) {
     sources: results.map(d => d.metadata?.source)
   };
 }
+
+
 
 /* --------------------------------------------------
    EXPORTS

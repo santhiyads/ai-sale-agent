@@ -1,91 +1,132 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { sendChatMessage } from "../services/chatApi";
-import Message from "./Message";
-import TypingIndicator from "./TypingIndicator";
+import { speak } from "../utils/speak";
+import "../styles/chat.css";
 
 export default function ChatBubble({
   campaignId,
   companyName,
-  productName
+  productName,
+  logo
 }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
+  const [isTalking, setIsTalking] = useState(false);
 
-  // 🔹 Initial AI greeting (runs once)
+  const endRef = useRef(null);
+
+  /* ===== INIT MESSAGE ===== */
   useEffect(() => {
     setMessages([
       {
         text: `👋 Hi! I’m the AI assistant for ${productName} by ${companyName}.
-I can help you with price, features, warranty, and offers.
-
-👉 What would you like to know?`,
+I can help you with price, features, and current offers.`,
         isUser: false
       }
     ]);
   }, [companyName, productName]);
 
-  const sendMessage = async () => {
+  /* ===== AUTO SCROLL ===== */
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, typing]);
+
+  /* ===== SEND MESSAGE ===== */
+  async function sendMessage() {
     if (!input.trim()) return;
 
-    // Add user message
-    setMessages(prev => [...prev, { text: input, isUser: true }]);
-    const userInput = input;
+    const userText = input;
+    window.speechSynthesis.cancel();
+
+    setMessages(prev => [...prev, { text: userText, isUser: true }]);
     setInput("");
     setTyping(true);
 
     try {
-      const res = await sendChatMessage(campaignId, userInput);
+      const res = await sendChatMessage(campaignId, userText);
 
-      // ✅ ALWAYS TRUST BACKEND REPLY
-      setMessages(prev => [
-        ...prev,
-        { text: res.reply, isUser: false }
-      ]);
+      setTyping(false);
+      setMessages(prev => [...prev, { text: res.reply, isUser: false }]);
+
+      setTimeout(() => {
+        setIsTalking(true);
+        speak(res.reply, () => setIsTalking(false));
+      }, 400);
 
     } catch (err) {
+      setTyping(false);
+      setIsTalking(true);
       setMessages(prev => [
         ...prev,
-        {
-          text: "⚠️ Something went wrong. Please try again.",
-          isUser: false
-        }
+        { text: "⚠️ Something went wrong. Please try again.", isUser: false }
       ]);
-    } finally {
-      setTyping(false);
     }
-  };
+  }
 
   return (
     <div className="chat-container">
-      {/* Header */}
+
+      {/* ===== HEADER WITH LOGO ===== */}
       <div className="chat-header">
-        <div>
-          <strong>{companyName}</strong>
-          <div className="chat-subtitle">{productName}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          
+          {logo && (
+            <img
+              src={logo}
+              alt={companyName}
+              style={{
+                height: "36px",
+                width: "36px",
+                objectFit: "contain",
+                borderRadius: "6px"
+              }}
+            />
+          )}
+
+          <div>
+            <strong>{companyName}</strong>
+            <div className="chat-subtitle">{productName}</div>
+          </div>
         </div>
+
         <span className="verified">✔ Verified</span>
       </div>
 
-      {/* Messages */}
-      <div className="chat-box">
-        <div className="messages">
-          {messages.map((m, i) => (
-            <Message key={i} text={m.text} isUser={m.isUser} />
-          ))}
-          {typing && <TypingIndicator />}
-        </div>
+      {/* ===== AVATAR ===== */}
+      <div className="ai-avatar">
+        <img
+          src={isTalking ? "/AI-talking-avatar.gif" : "/ai_not_talk.png"}
+          alt="AI Avatar"
+        />
+      </div>
 
-        {/* Input */}
-        <div className="input-bar">
-          <input
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            placeholder="Ask about price, warranty, size..."
-            onKeyDown={e => e.key === "Enter" && sendMessage()}
-          />
-          <button onClick={sendMessage}>Send</button>
-        </div>
+      {/* ===== MESSAGES ===== */}
+      <div className="messages">
+        {messages.map((m, i) => (
+          <div key={i} className={`message-row ${m.isUser ? "user" : "ai"}`}>
+            <div className={m.isUser ? "user-msg" : "ai-msg"}>
+              {m.text}
+            </div>
+          </div>
+        ))}
+
+        {typing && <div className="typing">AI is typing…</div>}
+        <div ref={endRef} />
+      </div>
+
+      {/* ===== INPUT ===== */}
+      <div className="input-bar">
+        <input
+          value={input}
+          onChange={e => {
+            setInput(e.target.value);
+            window.speechSynthesis.cancel();
+          }}
+          placeholder="Ask about price, offers..."
+          onKeyDown={e => e.key === "Enter" && sendMessage()}
+        />
+        <button onClick={sendMessage}>Send</button>
       </div>
     </div>
   );

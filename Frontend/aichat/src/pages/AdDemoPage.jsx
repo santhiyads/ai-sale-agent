@@ -17,8 +17,11 @@ export default function AdDemoPage({ ad }) {
           campaignId={ad.campaignId}
           companyName={ad.companyName}
           productName={ad.productName}
+          logo={ad.logo}
         />
       )}
     </>
   );
 }
+
+

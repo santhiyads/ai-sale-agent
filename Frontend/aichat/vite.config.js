@@ -7,6 +7,13 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 5173,
     strictPort: true,
-    allowedHosts: "all"
+    allowedHosts: "all",
+    proxy: {
+      "/chat": {
+        target: "http://localhost:4000",
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 });
