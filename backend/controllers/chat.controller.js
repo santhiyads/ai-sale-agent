@@ -16,12 +16,17 @@ const { getNextState } = require("../services/chatState.service");
 const detectIntent = require("../services/intent.service");
 const { canAnswerFromContext } = require("../services/knowledgeJudge.service");
 
-const { initSemanticRag, getSemanticContext } =
-  require("../services/semanticRag.service");
+//const { initSemanticRag, getSemanticContext } =
+//  require("../services/semanticRag.service");
 
-const {
-  generateSemanticAnswer
-} = require("../services/semanticAnswer.service");
+//const {
+ // generateSemanticAnswer
+
+//
+// } = require("../services/semanticAnswer.service");
+const { fetchIfNeededAndAnswer } = require("../services/semanticRag.service");
+const { generateSemanticAnswer } = require("../services/semanticAnswer.service");
+
 
 exports.sendMessage = async (req, res) => {
   try {
@@ -105,9 +110,9 @@ exports.sendMessage = async (req, res) => {
       products
     });
 
-    /* --------------------------------------------------
+  /*  /* --------------------------------------------------
    8️⃣ AI Knowledge Sufficiency Judge
--------------------------------------------------- */
+-------------------------------------------------- 
     const canAnswer = await canAnswerFromContext({
       ragContext,
       userMessage: message
@@ -116,7 +121,7 @@ exports.sendMessage = async (req, res) => {
 
 /* --------------------------------------------------
    9️⃣ Semantic RAG (ONLY if needed)
--------------------------------------------------- */
+--------------------------------------------------
     if (!canAnswer) {
   // 1️⃣ Initialize semantic RAG (company-scoped)
   await initSemanticRag(company.companyId, company.website);
@@ -148,8 +153,42 @@ exports.sendMessage = async (req, res) => {
 
   return res.json({ reply: semanticReply });
 }
+*/
 
-// Check if web RAG is needed
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------------------------------------
+   8️⃣ Knowledge sufficiency judge
+-------------------------------------------------- */
+const canAnswer = await canAnswerFromContext({
+  ragContext,
+  userMessage: message
+});
+
+let semanticContext = "";
+
+// If campaign RAG is NOT sufficient → use Semantic RAG
+if (!canAnswer) {
+  console.log("🔍 Campaign RAG insufficient → invoking Semantic RAG");
+
+  const semanticResult = await fetchIfNeededAndAnswer(
+    company.website,
+    message
+  );
+
+  semanticContext = semanticResult.context || "";
+}
+
+
 if (knowledgeDecision.needsWebRag) {
   const webContext = await getWebContext(message);
 
@@ -199,17 +238,33 @@ if (knowledgeDecision.needsWebRag) {
         `You are an AI sales assistant for ${company.name}. Explain who you are.`;
     }
 
-    /* --------------------------------------------------
-       9️⃣ Generate AI reply (INTENT + STATE AWARE)
-    -------------------------------------------------- */
-    const reply = await generateAIResponse({
+/* --------------------------------------------------
+   1️⃣1️⃣ Generate final answer
+-------------------------------------------------- */
+  let reply;
+
+  if (semanticContext) {
+    // Campaign + Semantic
+    reply = await generateSemanticAnswer({
       state: nextState,
-      ragContext: finalRagContext,
+      ragContext,
+      semanticContext,
       history,
       userMessage: message,
       intent,
       systemHint
     });
+  } else {
+    // Campaign only
+    reply = await generateAIResponse({
+      state: nextState,
+      ragContext,
+      history,
+      userMessage: message,
+      intent,
+      systemHint
+    });
+  }
 
     /* --------------------------------------------------
        🔟 Save AI reply + update state

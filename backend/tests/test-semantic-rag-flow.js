@@ -92,7 +92,7 @@ async function runTest(userMessage) {
   await runTest("Do you offer customized cake toppers?");
   await runTest("What material is used for the cake toppers?");
   await runTest("Compare customized cake topper vs normal topper");
-  await runTest("Compare Apple iPhone 11 and iPhone 12");
+  await runTest("Compare birthday  and  wedding cake toppers");
 
   console.log("\n✅ Web RAG flow test completed");
 })();

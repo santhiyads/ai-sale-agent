@@ -9,9 +9,7 @@ export async function ingestWebsite(url) {
   console.log("🚀 STARTING LANGCHAIN INGEST");
   console.log("🌐 Website:", url);
 
-  const loader = new CheerioWebBaseLoader(url, {
-    selector: "body",
-  });
+  const loader = new CheerioWebBaseLoader(url);
 
   const docs = await loader.load();
   console.log("📄 Pages loaded:", docs.length);

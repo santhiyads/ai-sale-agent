@@ -1,15 +1,19 @@
-const { generateAIResponse } = require("./aiChat.service");
+const OpenAI = require("openai");
+
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 /**
  * Generate final AI answer using:
- * - Campaign RAG (trusted)
- * - Semantic RAG (website)
+ * - Campaign RAG (PRIMARY, trusted)
+ * - Semantic RAG (SECONDARY, website)
  */
 async function generateSemanticAnswer({
   state,
   ragContext,
-  semanticContext,
-  history,
+  semanticContext = "",
+  history = [],
   userMessage,
   intent,
   systemHint = ""
@@ -17,13 +21,15 @@ async function generateSemanticAnswer({
   const SYSTEM_PROMPT = `
 You are a PROFESSIONAL AI SALES ASSISTANT.
 
-STRICT RULES:
+STRICT RULES (MANDATORY):
 - You represent ONLY this company
-- Use campaign information FIRST
-- Use website knowledge ONLY if campaign data is missing
+- Campaign data is the PRIMARY source of truth
+- Website knowledge is SECONDARY and only used if campaign data is insufficient
 - NEVER invent facts
 - NEVER mention competitors unless explicitly asked
-- NEVER say "based on the website"
+- NEVER say phrases like "based on the website"
+- NEVER reveal internal sources
+- ALWAYS answer directly
 - After answering, ask ONE short sales follow-up question
 
 CURRENT CHAT STATE: ${state}
@@ -31,10 +37,14 @@ CURRENT USER INTENT: ${intent}
 
 ${systemHint}
 
-CAMPAIGN DATA (PRIMARY SOURCE):
+====================
+CAMPAIGN DATA (PRIMARY)
+====================
 ${ragContext}
 
-WEBSITE KNOWLEDGE (SECONDARY SOURCE):
+====================
+WEBSITE KNOWLEDGE (SECONDARY)
+====================
 ${semanticContext}
 `;
 
@@ -47,16 +57,13 @@ ${semanticContext}
     { role: "user", content: userMessage }
   ];
 
-  const response = await generateAIResponse({
-    state,
-    ragContext: SYSTEM_PROMPT,
-    history: [],
-    userMessage: "",
-    intent,
-    systemHint: ""
+  const response = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages,
+    temperature: 0.2
   });
 
-  return response;
+  return response.choices[0].message.content;
 }
 
 module.exports = {
